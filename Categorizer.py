@@ -20,6 +20,7 @@ utilities = df["Utilities"].tolist()
 charity = df["Charity"].tolist()
 
 
+# remove nulls from list
 def remove_nulls(mylist):
     for i in range(len(mylist)):
         if type(mylist[i]) == str:
@@ -43,7 +44,6 @@ remove_nulls(charity)
 
 
 # application layer begins
-
 def categorize(line):
     line = line.upper()  # Capitalize everything to match case of list
 
@@ -111,7 +111,6 @@ def plot_finances_barh():
 
 def plot_finances_pie(y, data):
     plt.pie(y, labels=data)
-
 
 
 x = ["Rent", "Groceries", "Gas", "Fast Food", "Car", "Entertainment", "Self Improvement", "Household Items", "Charity", "Utilities", "Other"]
