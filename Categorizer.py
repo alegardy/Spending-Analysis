@@ -3,60 +3,46 @@ from csv import reader
 from matplotlib import pyplot as plt
 import pandas as pd
 
+# User submitted file path
 path = "/Users/alegardy/Documents/Personal/Finances/Checkings_Statements/2020/"
 
-
-# Categories
-#food_file = open("fast_food.txt", newline=" ")
-#fast_food = reader(food_file)
-
-df = pd.read_csv(path + "version-1.csv", delimiter=",")
-print(df)
-
-
-#entertainment_file = ("entertainment.txt", "r")
-#entertainment = reader(entertainment_file)
-
-gas_file = open("gas.txt", "r")
-read = reader(gas_file)
-gas = list(read)
-#print(gas)
+# Storage to application layer
+df = pd.read_csv("data.csv", delimiter=",")
+gas = df["Gas"].tolist()
+entertainment = df["Entertainment"].tolist()
+fast_food = df["Fast Food"].tolist()
+car = df["Car"].tolist()
+groceries = df["Groceries"].tolist()
+household_items = df["Household Items"].tolist()
+self_improvement = df["Self Improvement"].tolist()
+investment = df["Investment"].tolist()
+utilities = df["Utilities"].tolist()
+charity = df["Charity"].tolist()
 
 
+def remove_nulls(mylist):
+    for i in range(len(mylist)):
+        if type(mylist[i]) == str:
+            continue
+        else:
+            del mylist[i:]
+            break
 
 
+# remove nulls from all lists
+remove_nulls(gas)
+remove_nulls(entertainment)
+remove_nulls(fast_food)
+remove_nulls(car)
+remove_nulls(groceries)
+remove_nulls(household_items)
+remove_nulls(self_improvement)
+remove_nulls(investment)
+remove_nulls(utilities)
+remove_nulls(charity)
 
 
-#household_file = open("household_items.txt", "r")
-#household_items = reader(household_file)
-
-##car = car_file.readlines()
-
-#improvement_file = open("self_improvement.txt", "r")
-#self_improvement = reader(improvement_file)
-
-#utilities_file = open("utilities.txt", "r")
-#utilities = reader(utilities_file)
-
-#tithe_file = open("tithe.txt", "r")
-#tithe = reader(tithe_file)
-
-
-# All categories in one dictionary
-"""
-categories = {
-    "Fast food": fast_food,
-    "Groceries" : groceries_stores,
-    "Gas" : gas,
-    "Car" : car,
-    "Entertainment" : entertainment,
-    "Self Improvement" : self_improvement,
-    "Toiletries": household_items,
-    "Tithe" : tithe,
-    "Utilities" : utilities
-}
-"""
-
+# application layer begins
 
 def categorize(line):
     line = line.upper()  # Capitalize everything to match case of list
@@ -65,7 +51,7 @@ def categorize(line):
         if item in line:
             return "Fast food"
 
-    for item in groceries_stores:
+    for item in groceries:
         if item in line:
             return "Groceries"
 
@@ -89,27 +75,14 @@ def categorize(line):
         if item in line:
             return "Household Items"
 
-    for item in tithe:
+    for item in charity:
         if item in line:
-            return "Tithe"
+            return "Charity"
 
     for item in utilities:
         if item in line:
             return "Utilities"
     return "other"
-
-
-def plot_finances_barh():
-
-    plt.barh(x, amounts, color="teal")
-    plt.ylabel("Categories")
-    plt.xlabel("Amount of Money")
-    plt.title("Spending Analysis")
-    plt.show()
-
-
-def plot_finances_pie(y, data):
-    plt.pie(y, labels=data)
 
 
 def analyze(read_file, write_file):
@@ -124,16 +97,29 @@ def analyze(read_file, write_file):
         csv_writer.writerow(["Date", "Amount", "item", "Category"])
 
         for row in csv_reader:
-            del row[2:4]  # get rid of the * and ""
+            del row[2:4]  # get rid of the * and "" this will need to be updated.
             cat = categorize(row[2])
             row.append(cat)
             csv_writer.writerow(row)
 
-x = ["Rent", "Groceries", "Gas", "Fast Food", "Car", "Entertainment", "Self Improvement", "Household Items", "Tithe",
-         "Utilities", "Other"]
-amounts = [820.00, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
-#analyze("August-WF-copy.csv", "version-2.csv")
+# Presentation Layer
+
+def plot_finances_barh():
+    plt.show()
+
+
+def plot_finances_pie(y, data):
+    plt.pie(y, labels=data)
+
+
+
+x = ["Rent", "Groceries", "Gas", "Fast Food", "Car", "Entertainment", "Self Improvement", "Household Items", "Charity", "Utilities", "Other"]
+
+analyze("August-WF-copy.csv", "version-3.csv")
+chart = pd.read_csv(path+"version-3.csv")
+
+
 # print(str(round(((1 - (acc/82)) * 100))) + "% accuracy")
 
 
